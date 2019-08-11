@@ -25,6 +25,7 @@ namespace Frame_Checker
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            backgroundWorker1.CancelAsync();
             Application.Exit();
         }
 
@@ -72,37 +73,51 @@ namespace Frame_Checker
                 Mat img = new Mat(file);
                 Emgu.CV.CvInvoke.Resize(img, img, new Size(16, 16), 0, 0, Emgu.CV.CvEnum.Inter.Linear);
                 double nrmse = 0;
-                Point point = new Point();
-                point.X = 510;
-                point.Y = 566;
-                TextBox newtext_Box = new TextBox();
-                newtext_Box.Location = point;
-                newtext_Box.Visible = true;
+              
+           
                 while (videoCapture.IsOpened)
                 {
                     image = videoCapture.QueryFrame();
                     Emgu.CV.CvInvoke.Resize(image, Img2, new Size(16, 16), 0, 0, Emgu.CV.CvEnum.Inter.Linear);
-                    nrmse = calc_mse(img, Img2);
-                    newtext_Box.Text = nrmse.ToString();
+                    nrmse = calc_mse(img, Img2)*100;
+                    
                    
-                    //textBox2.Text = calc_mse(img, image).ToString();
-                    if (nrmse <= 0.05)
+                    if (nrmse <= 10)
                     {
                         pictureBox2.Image = image.Bitmap;
+                        textBox3.Text = nrmse.ToString();
+
                         break;
 
                     }
-                    else if(nrmse<=0.1)
+                    else
                     {
-                        pictureBox2.Image = image.Bitmap;
-                        break;
+                        textBox4.Text = nrmse.ToString();
+                        pictureBox2.Image = null;
                     }
-                    else if(nrmse<=0.15)
-                    {
-                        pictureBox2.Image = image.Bitmap;
-                        break;
-                    }
-                   
+                    //if (nrmse <= 0.05)
+                    //{
+                    //    pictureBox2.Image = image.Bitmap;
+                    //    textBox3.Text = nrmse.ToString();
+
+                    //    break;
+
+                    //}
+                    ////else if(nrmse<=0.1)
+                    //{
+                    //    pictureBox2.Image = image.Bitmap;
+                    //    textBox3.Text = nrmse.ToString();
+
+                    //    break;
+                    //}
+                    //else if(nrmse<=0.15)
+                    //{
+                    //    pictureBox2.Image = image.Bitmap;
+                    //    textBox3.Text = nrmse.ToString();
+
+                    //    break;
+                    //}
+
 
                 }
                 System.Threading.Thread.Sleep(1000);
@@ -139,13 +154,15 @@ namespace Frame_Checker
             double total_size = image1.Width * image1.Height;
             //float y1=0, y2=0;
             double max=0, min=0;
+            double square_of_Diff = 0;
             for (int x = 0; x < image1.Width; x++)
             {
                 for (int y = 0; y < image1.Height; y++)
                 {
                    img1= image1.ToImage<Gray,Byte>().Data[x,y,0];
                    img2 = image2.ToImage<Gray, Byte>().Data[x, y, 0];
-                   diff = img1 - img2;
+                   diff =Convert.ToDouble( img1 - img2);
+                    square_of_Diff = (diff*diff);
                     if(max==0)
                     {
                         max = diff;
@@ -158,7 +175,7 @@ namespace Frame_Checker
                     {
                         min = diff;
                     }
-                   sum += (diff * diff);
+                   sum += (square_of_Diff);
                 }
             }
             return ((System.Math.Sqrt(sum / total_size))/(max-min));

@@ -40,6 +40,10 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -142,6 +146,8 @@
             // 
             // backgroundWorker1
             // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
             // 
@@ -153,12 +159,50 @@
             this.progressBar1.Size = new System.Drawing.Size(334, 29);
             this.progressBar1.TabIndex = 9;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label4.Location = new System.Drawing.Point(457, 71);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(178, 17);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Compared at Nrmse Value:";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(492, 113);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(98, 22);
+            this.textBox3.TabIndex = 12;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(470, 165);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(147, 17);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Values Being Ignored:";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(492, 209);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(98, 22);
+            this.textBox4.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSlateBlue;
             this.ClientSize = new System.Drawing.Size(1122, 809);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -193,6 +237,10 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }
 
