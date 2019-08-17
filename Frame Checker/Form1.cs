@@ -80,9 +80,9 @@ namespace Frame_Checker
                     image = videoCapture.QueryFrame();
                     Emgu.CV.CvInvoke.Resize(image, Img2, new Size(16, 16), 0, 0, Emgu.CV.CvEnum.Inter.Linear);
                     nrmse = calc_mse(img, Img2)*100;
-                    
+                    //nrmse=calculate_nrmse(convert_to_byte(img.Bitmap),convert_to_byte(Img2.Bitmap))*100;
                    
-                    if (nrmse <= 10)
+                    if (nrmse <= int.Parse(textBox5.Text))
                     {
                         pictureBox2.Image = image.Bitmap;
                         textBox3.Text = nrmse.ToString();
@@ -144,6 +144,45 @@ namespace Frame_Checker
         //    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
         //    return ms.ToArray();
         //}
+
+        public byte[] convert_to_byte(System.Drawing.Image image)
+        {
+            byte[] bytearray = new byte[0];
+            using (var stream = new MemoryStream())
+            {
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Close();
+                bytearray = stream.ToArray();
+            }
+            return bytearray;
+        }
+        public double calculate_nrmse(byte[] image1,byte[] image2)
+        {
+            double square_diff = 0;
+            double sum = 0;
+            double max = 0;
+            double min = 0;
+            for (int i = 0; i< image1.Length;i++)
+            {
+                square_diff = Math.Pow(image1[i] - image2[i], 2);
+                sum += square_diff;
+                if (max == 0)
+                {
+                    max = square_diff;
+                }
+                if (max < square_diff)
+                {
+                    max = square_diff;
+                }
+                if (square_diff < min)
+                {
+                    min = square_diff;
+                }
+                
+            }
+            return ((System.Math.Sqrt(sum / 255)/max-min));
+
+        }
         public double calc_mse(Mat image1, Mat image2)
         {
             double diff;
@@ -178,8 +217,17 @@ namespace Frame_Checker
                    sum += (square_of_Diff);
                 }
             }
-            return ((System.Math.Sqrt(sum / total_size))/(max-min));
+            //return ((System.Math.Sqrt(sum / total_size)/(max-min)));
+            return ((System.Math.Sqrt(sum / 255))/(max-min));
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
+
 
 }
